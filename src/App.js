@@ -1,24 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
+import Login from './pages/Login/Login'
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import {Button} from 'antd'
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <UserLoginTemplate exact path="/login" Component={Login}/>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
