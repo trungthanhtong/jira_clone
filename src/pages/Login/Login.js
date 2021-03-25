@@ -1,41 +1,25 @@
 import React, { useState } from "react";
 import { Prompt } from "react-router-dom";
 import { Input, Button } from "antd";
-import { UserOutlined, LockOutlined} from "@ant-design/icons";
-import {withFormik} from 'formik';
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { withFormik } from "formik";
+import * as Yup from 'yup'
+import {connect} from 'react-redux'
+import { signInAction } from "../../redux/actions/UserActions";
 
 function Login(props) {
-    const [userLogin, setUserLogin] = useState({
-        username: "",
-        password: "",
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserLogin({
-            ...userLogin,
-            [name]: value,
-        });
-    };
-
-    const handleLogin = (e) => {
-        e.preventDefault();
-        if (userLogin.username === "thanh" && userLogin.password === "tong") {
-            // Back to previous page
-            // props.history.goBack();
-
-            // Back to some page
-            props.history.push("/home");
-            localStorage.setItem("userLogin", JSON.stringify(userLogin));
-        } else {
-            alert("Login failed");
-            return;
-        }
-    };
+    const {
+        values,
+        touched,
+        errors,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+    } = props;
 
     return (
         <form
-            onSubmit={handleLogin}
+            onSubmit={handleSubmit}
             className="container text-center d-flex justify-content-center align-items-center"
             style={{ height: "100%" }}
         >
@@ -43,49 +27,67 @@ function Login(props) {
                 <h3 className="display-4">Login</h3>
                 <div className="mt-2">
                     <Input
+                        name="email"
+                        onChange={handleChange}
                         size="large"
                         placeholder="Enter your user name"
                         prefix={<UserOutlined />}
                     />
+                    {touched.email ? <p className="text-danger">{errors.email}</p> : ''}
                 </div>
                 <div className="mt-2">
                     <Input
+                        onChange={handleChange}
+                        name="password"
                         type="password"
                         size="large"
                         placeholder="Password"
                         prefix={<LockOutlined />}
                     />
+                    {touched.password ? <p className="text-danger">{errors.password}</p> : ''}
                 </div>
                 <div className="mt-4">
-                    <Button style={{width:'100%', backgroundColor:'rgb(102,117,223', color:'white'}} size="large">Login</Button>
+                    <Button
+                        htmlType="submit"
+                        style={{
+                            width: "100%",
+                            backgroundColor: "rgb(102,117,223",
+                            color: "white",
+                        }}
+                        size="large"
+                    >
+                        Login
+                    </Button>
                 </div>
-                <Prompt
-                    when={true}
-                    message={(location) => {
-                        return "Are you sure want to leave?";
-                    }}
-                />
             </div>
         </form>
     );
 }
 
 const LoginWithFormik = withFormik({
-    mapPropsToValues: () => ({name: ''}),
-    validate: values => {
-        const errors = {};
-        if (!values.name) {
-            errors.name = 'Required';
-        }
-        return errors
+    mapPropsToValues: () => ({
+        email: "",
+        password: "",
+    }),
+    // validate: values => {
+    //     const errors = {};
+    //     if (!values.name) {
+    //         errors.name = 'Required';
+    //     }
+    //     return errors
+    // },
+    validationSchema: Yup.object().shape({
+        email: Yup.string().required('Email is required').email('Email is not valid'),
+        password: Yup.string().required('Password is required').min(6, 'Password requires 6 characters').max(32, 'Password cannot exceed 32 characters')
+    }),
+    handleSubmit: (values, { props, setSubmitting }) => {
+        // setTimeout(() => {
+        //     alert(JSON.stringify(values, null, 2));
+        //     setSubmitting(false);
+        // }, 1000)
+        props.dispatch(signInAction(values.email, values.password));
     },
-    handleSubmit: (values, {setSubmitting}) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-        }, 1000)
-    },
-    displayName: 'BasicForm',
-})(Login)
+    displayName: "Login",
+})(Login);
 
-export default LoginWithFormik;
+export default connect()(LoginWithFormik);
