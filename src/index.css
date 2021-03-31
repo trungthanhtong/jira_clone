@@ -463,3 +463,20 @@
   font-size: 14px;
 }
 
+i {
+  margin-right: 5px;
+}
+
+.form-group {
+  margin-top: 20px;
+}
+
+.createProject {
+  width: 50%;
+  margin: 50px auto 0;
+}
+
+.createProject h3, .createProject .btnSubmit {
+  text-align: center;
+}
+

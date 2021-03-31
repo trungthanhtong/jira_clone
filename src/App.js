@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Switch, useHistory } from "react-router-dom";
 import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
 import Login from './pages/Login/Login'
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
@@ -8,7 +8,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addHistory } from './redux/actions/HistoryActions';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
-import Home from './pages/Home/Home'
+import CreateProject from './pages/CreateProject/CreateProject';
+import Board from './pages/Home/Board';
+import ProjectManagement from './pages/ProjectManagement/ProjectManagement';
 
 
 
@@ -27,7 +29,9 @@ function App() {
       <Loading/>
       <Switch>
         <UserLoginTemplate exact path="/login" Component={Login}/>
-        <HomeTemplate exact path="/home" Component={Home} />
+        <HomeTemplate exact path="/board" Component={Board} />
+        <HomeTemplate exact path="/createproject" Component={CreateProject} />
+        <HomeTemplate exact path="/projectmanagement" Component={ProjectManagement} />
       </Switch>
     </>
   );
