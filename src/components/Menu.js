@@ -6,7 +6,10 @@ export default function Menu() {
         <div className="menu">
             <div className="account">
                 <div className="avatar">
-                    <img src={require('../assets/img/logo.png').default} alt="logo" />
+                    <img
+                        src={require("../assets/img/logo.png").default}
+                        alt="logo"
+                    />
                 </div>
                 <div className="account-info">
                     <p>Jira Clone</p>
@@ -16,11 +19,33 @@ export default function Menu() {
             <div className="control">
                 <div>
                     <i className="fa fa-credit-card" />
-                    <NavLink className="text-dark" activeClassName="active fw-bold" to="/board">Board</NavLink>
+                    <NavLink
+                        className="text-dark"
+                        activeClassName="active fw-bold"
+                        to="/board"
+                    >
+                        Board
+                    </NavLink>
+                </div>
+                <div>
+                    <i className="fa fa-project-diagram"></i>
+                    <NavLink
+                        className="text-dark"
+                        activeClassName="active fw-bold"
+                        to="/projectmanagement"
+                    >
+                        Project Management
+                    </NavLink>
                 </div>
                 <div>
                     <i className="fa fa-cog" />
-                    <NavLink className="text-dark" activeClassName="active fw-bold" to="/createproject">Create Project</NavLink>
+                    <NavLink
+                        className="text-dark"
+                        activeClassName="active fw-bold"
+                        to="/createproject"
+                    >
+                        Create Project
+                    </NavLink>
                 </div>
             </div>
             <div className="feature">

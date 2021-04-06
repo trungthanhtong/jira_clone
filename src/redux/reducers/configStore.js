@@ -5,6 +5,8 @@ import LoadingReducer from './LoadingReducer'
 import HistoryReducer from './HistoryReducer'
 import UserReducer from './UserReducer'
 import ProjectCategoryReducer from './ProjectCategoryReducer'
+import ProjectReducer from './ProjectReducer'
+import DrawerReducer from './DrawerReducer'
 
 const middlewareSaga = createMiddlewareSaga();
 
@@ -13,6 +15,8 @@ const rootReducer = combineReducers({
     HistoryReducer,
     UserReducer,
     ProjectCategoryReducer,
+    ProjectReducer,
+    DrawerReducer,
 })
 
 const store = createStore(rootReducer, applyMiddleware(middlewareSaga));

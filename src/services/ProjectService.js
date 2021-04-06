@@ -25,4 +25,21 @@ export const ProjectService = {
             headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
         })
     },
+
+    getAllProjects: () => {
+        return Axios({
+            url: `${DOMAIN_JIRA}/Project/getAllProject`,
+            method: 'GET',
+            headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+        })
+    },
+
+    updateProject: (editedProject) => {
+        return Axios({
+            url: `${DOMAIN_JIRA}/Project/updateProject?projectID=${editedProject.id}`,
+            method: 'PUT',
+            data: editedProject,
+            headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+        })
+    }
 };

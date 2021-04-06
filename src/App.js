@@ -11,6 +11,7 @@ import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
 import CreateProject from './pages/CreateProject/CreateProject';
 import Board from './pages/Home/Board';
 import ProjectManagement from './pages/ProjectManagement/ProjectManagement';
+import DrawerHOC from './HOC/Drawer/DrawerHOC';
 
 
 
@@ -27,6 +28,7 @@ function App() {
   return (
     <>
       <Loading/>
+      <DrawerHOC/>
       <Switch>
         <UserLoginTemplate exact path="/login" Component={Login}/>
         <HomeTemplate exact path="/board" Component={Board} />

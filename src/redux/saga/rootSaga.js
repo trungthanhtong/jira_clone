@@ -9,5 +9,7 @@ export function * rootSaga() {
         UserSaga.watchingSignIn(),
         ProjectCategory.watchingAllProjectCatagories(),
         ProjectSaga.watchingCreateProject(),
+        ProjectSaga.watchingGetAllProjects(),
+        ProjectSaga.watchingUpdateProject(),
     ])
 }

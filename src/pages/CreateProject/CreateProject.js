@@ -85,13 +85,6 @@ const CreateProjectForm = withFormik({
             categoryID: props.projectCatagories[0]?.id,
         };
     },
-    // validate: values => {
-    //     const errors = {};
-    //     if (!values.name) {
-    //         errors.name = 'Required';
-    //     }
-    //     return errors
-    // },
     validationSchema: Yup.object().shape({}),
     handleSubmit: (values, { props, setSubmitting }) => {
         props.dispatch(createProject(values))
