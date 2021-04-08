@@ -52,7 +52,7 @@ function EditProjectForm(props) {
                 <div className="col-4">
                     <div className="form-group">
                         <p className="fw-bold">Project category</p>
-                        <select className="form-control" name="categoryID" value={values.categoryID}>
+                        <select className="form-control" name="categoryID" onChange={handleChange} value={values.categoryID}>
                             {projectCategories.map((item, index) => {
                                 return <option key={index} value={item.id}>{item.projectCategoryName}</option>
                             })}

@@ -1,45 +1,37 @@
 import { ACCESS_TOKEN, DOMAIN_JIRA } from "../util/constants/settingSystem";
 import Axios from "axios";
+import { BaseService } from "./BaseService";
 
-export const ProjectService = {
-    getAllProjectCategory: () => {
-        return Axios({
-            url: `${DOMAIN_JIRA}/projectCategory`,
-            method: "GET",
-        });
-    },
+class ProjectService extends BaseService {
 
-    createProject: (newProject) => {
-        return Axios({
-            url: `${DOMAIN_JIRA}/project/createProject`,
-            method: "POST",
-            data: newProject,
-        });
-    },
+    constructor(){
+        super();
+    }
 
-    createProjectAuthorized: (newProject) => {
-        return Axios({
-            url: `${DOMAIN_JIRA}/Project/createProjectAuthorize`,
-            method: 'POST',
-            data: newProject,
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
-        })
-    },
+    getAllProjectCategory = () => {
+        return this.get('projectCategory');
+    }
 
-    getAllProjects: () => {
-        return Axios({
-            url: `${DOMAIN_JIRA}/Project/getAllProject`,
-            method: 'GET',
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
-        })
-    },
+    createProject = (newProject) => {
+        return this.post('project/createProject', newProject);
+    }
 
-    updateProject: (editedProject) => {
-        return Axios({
-            url: `${DOMAIN_JIRA}/Project/updateProject?projectID=${editedProject.id}`,
-            method: 'PUT',
-            data: editedProject,
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
-        })
+    createProjectAuthorized = (newProject) => {
+        return this.post('Project/createProjectAuthorize', newProject);
+    }
+
+    getAllProjects = () => {
+        return this.get('Project/getAllProject');
+    }
+
+    updateProject = (editedProject) => {
+        return this.put(`Project/updateProject?projectID=${editedProject.id}`, editedProject);
+    }
+
+    deleteProject = (project) => {
+        return this.delete(`Project/deleteProject?projectId=${project.id}`);
     }
 };
+
+
+export const projectService = new ProjectService();

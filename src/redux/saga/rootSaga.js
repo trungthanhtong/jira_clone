@@ -7,9 +7,13 @@ import * as ProjectSaga from './ProjectSaga';
 export function * rootSaga() {
     yield all([
         UserSaga.watchingSignIn(),
+        UserSaga.watchingGetUser(),
+        UserSaga.watchingAssignUserToProject(),
+
         ProjectCategory.watchingAllProjectCatagories(),
         ProjectSaga.watchingCreateProject(),
         ProjectSaga.watchingGetAllProjects(),
         ProjectSaga.watchingUpdateProject(),
+        ProjectSaga.watchingDeleteProject(),
     ])
 }

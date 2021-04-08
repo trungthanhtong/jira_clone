@@ -1,12 +1,19 @@
-import { DOMAIN_JIRA } from "../util/constants/settingSystem"
-import Axios from 'axios'
+import { DOMAIN_JIRA } from "../util/constants/settingSystem";
+import Axios from "axios";
+import { BaseService } from "./BaseService";
 
-export const UserService = {
-    signIn: (userLogin) => {
-        return Axios({
-            url:`${DOMAIN_JIRA}/users/signin`,
-            method: 'POST',
-            data: userLogin
-        })
-    }
+class UserService extends BaseService {
+    signIn = (userLogin) => {
+        return this.post("users/signin", userLogin);
+    };
+
+    getUser = (keyword) => {
+        return this.get(`Users/getUser?keyword=${keyword}`);
+    };
+
+    assignUserToProject = (userProject) => {
+        return this.post('Project/assignUserProject', userProject);
+    };
 }
+
+export const userService = new UserService();

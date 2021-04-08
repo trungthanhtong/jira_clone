@@ -1,4 +1,4 @@
-import { CREATE_PROJECT_SAGA, GET_ALL_PROJECTS_SAGA, SET_EDITED_PROJECT, UPDATE_PROJECT_SAGA } from "../constants/JiraConstants";
+import { CREATE_PROJECT_SAGA, DELETE_PROJECT_SAGA, GET_ALL_PROJECTS_SAGA, SET_EDITED_PROJECT, UPDATE_PROJECT_SAGA } from "../constants/JiraConstants";
 
 export const createProject = (newProject) => ({
     type: CREATE_PROJECT_SAGA,
@@ -17,6 +17,11 @@ export const setEditedProject = (editedProject) => ({
 export const updateProject = (editedProject) => ({
     type: UPDATE_PROJECT_SAGA,
     editedProject
+})
+
+export const deleteProject = (project) => ({
+    type: DELETE_PROJECT_SAGA,
+    project,
 })
 
 

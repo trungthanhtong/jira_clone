@@ -1,21 +1,25 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { USER_LOGIN } from "../../util/constants/settingSystem";
-import { SET_AUTHENTICATION } from "../constants/JiraConstants";
+import { GET_USER_FROM_SEARCH, SET_AUTHENTICATION } from "../constants/JiraConstants";
 
-let user = {};
+let currentUser = {};
 
 if (localStorage.getItem(USER_LOGIN)) {
-    user = JSON.parse(localStorage.getItem(USER_LOGIN));
+    currentUser = JSON.parse(localStorage.getItem(USER_LOGIN));
 }
 
 const initialState = {
-    user
+    currentUser,
+    searchedUsers: [],
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case SET_AUTHENTICATION: {
-            return {...state, user: action.user};
+            return {...state, currentUser: action.user};
+        }
+        case GET_USER_FROM_SEARCH: {
+            return {...state, searchedUsers: action.users};
         }
     default:
         return {...state}
