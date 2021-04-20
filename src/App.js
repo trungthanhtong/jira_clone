@@ -31,9 +31,10 @@ function App() {
       <DrawerHOC/>
       <Switch>
         <UserLoginTemplate exact path="/login" Component={Login}/>
-        <HomeTemplate exact path="/board" Component={Board} />
+        <HomeTemplate exact path="/board/:projectID" Component={Board} />
         <HomeTemplate exact path="/createproject" Component={CreateProject} />
         <HomeTemplate exact path="/projectmanagement" Component={ProjectManagement} />
+        <HomeTemplate exact path="/" Component={ProjectManagement} />
       </Switch>
     </>
   );

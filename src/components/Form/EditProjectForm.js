@@ -89,7 +89,7 @@ const EditForm = withFormik({
     handleSubmit: (values, { props, setSubmitting }) => {
         props.dispatch(updateProject(values))
     },
-    displayName: "Login",
+    displayName: "Edit project form",
 })(EditProjectForm);
 
 const mapStateToProps = (state) => {

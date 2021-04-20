@@ -1,47 +1,34 @@
 import React from "react";
+import { Avatar } from "antd";
 
-export default function MainInfo() {
+export default function MainInfo(props) {
+
+    const {projectDetail} = props;
+
+    const renderAvatar = () => {
+        return projectDetail.members?.map((item, index) => {
+            return <Avatar key={index}>{item.name[0]}</Avatar>;
+        });
+    };
+
     return (
-        <div className="info" style={{ display: "flex" }}>
-            <div className="search-block">
-                <input className="search" />
-                <i className="fa fa-search" />
-            </div>
-            <div className="avatar-group" style={{ display: "flex" }}>
-                <div className="avatar">
-                    <img
-                        src={
-                            require("../../assets/img/download (1).jfif")
-                                .default
-                        }
-                        alt="download 1"
-                    />
+        <>
+            <h3>{projectDetail?.projectName}</h3>
+            <div className="info" style={{ display: "flex" }}>
+                <div className="search-block">
+                    <input className="search" />
+                    <i className="fa fa-search" />
                 </div>
-                <div className="avatar">
-                    <img
-                        src={
-                            require("../../assets/img/download (2).jfif")
-                                .default
-                        }
-                        alt="download 2"
-                    />
+                <div className="avatar-group" style={{ display: "flex" }}>
+                    <Avatar.Group>{renderAvatar()}</Avatar.Group>
                 </div>
-                <div className="avatar">
-                    <img
-                        src={
-                            require("../../assets/img/download (3).jfif")
-                                .default
-                        }
-                        alt="download 3"
-                    />
+                <div style={{ marginLeft: 20 }} className="text">
+                    Only My Issues
+                </div>
+                <div style={{ marginLeft: 20 }} className="text">
+                    Recently Updated
                 </div>
             </div>
-            <div style={{ marginLeft: 20 }} className="text">
-                Only My Issues
-            </div>
-            <div style={{ marginLeft: 20 }} className="text">
-                Recently Updated
-            </div>
-        </div>
+        </>
     );
 }

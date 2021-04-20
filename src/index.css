@@ -502,3 +502,9 @@ i {
   background: #fff;
 }
 
+
+/* Create Task Form */
+.create-task-form p {
+  font-weight: bold;
+}
+

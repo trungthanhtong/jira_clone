@@ -9,7 +9,6 @@ import {
     Select,
     DatePicker,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_DRAWER } from "../../redux/constants/DrawerConstants";
 
@@ -17,7 +16,7 @@ const { Option } = Select;
 
 export default function DrawerHOC(props) {
 
-    const {visible, ComponentContent, callbackSubmit} = useSelector(state => state.DrawerReducer);
+    const {visible, ComponentContent, callbackSubmit, title} = useSelector(state => state.DrawerReducer);
     const dispatch = useDispatch();
 
     const onClose = () => {
@@ -27,7 +26,7 @@ export default function DrawerHOC(props) {
 
     return (
         <Drawer
-            title="Edit the project"
+            title={title}
             width={720}
             onClose={onClose}
             visible={ visible}

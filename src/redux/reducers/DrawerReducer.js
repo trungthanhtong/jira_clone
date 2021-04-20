@@ -4,14 +4,15 @@ import {CLOSE_DRAWER, OPEN_DRAWER, SET_SUBMIT_FORM} from '../constants/DrawerCon
 
 const initialState = {
     visible: false,
-    ComponentContent: <EditProjectForm/>,
+    title: '',
+    ComponentContent: '',
     callbackSubmit: () => {}
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case OPEN_DRAWER: {
-            return {...state, visible: true}
+            return {...state, visible: true, title: action.title, ComponentContent: action.Component}
         }
         case CLOSE_DRAWER: {
             return {...state, visible: false}

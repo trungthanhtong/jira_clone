@@ -5,10 +5,16 @@ import {
     SearchOutlined,
     PlusOutlined,
 } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { openDrawer } from "../redux/actions/DrawerActions";
+import CreateTaskForm from "./Form/CreateTaskForm";
 
 const { Header, Sider, Content } = Layout;
 
 export default function Sidebar() {
+
+    const dispatch = useDispatch();
+
     const [state, setState] = useState({
         collapsed: true,
     });
@@ -29,8 +35,10 @@ export default function Sidebar() {
         >
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-                <Menu.Item key="1" icon={<PlusOutlined />}>
-                    Create issue
+                <Menu.Item onClick={() => {
+                    dispatch(openDrawer('Create task', <CreateTaskForm/>))
+                }} key="1" icon={<PlusOutlined />}>
+                    Create task
                 </Menu.Item>
                 <Menu.Item key="2" icon={<SearchOutlined />}>
                     Search
@@ -41,31 +49,6 @@ export default function Sidebar() {
             </Menu>
         </Sider>
 
-        // <div className="sideBar">
-        //     <div className="sideBar-top">
-        //         <div className="sideBar-icon">
-        //             <i className="fab fa-jira" />
-        //         </div>
-        //         <div
-        //             className="sideBar-icon"
-        //             data-toggle="modal"
-        //             data-target="#searchModal"
-        //             style={{ cursor: "pointer" }}
-        //         >
-        //             <i className="fa fa-search" />
-        //             <span className="title">SEARCH ISSUES</span>
-        //         </div>
-        //         <div className="sideBar-icon">
-        //             <i className="fa fa-plus" />
-        //             <span className="title">CREATE ISSUES</span>
-        //         </div>
-        //     </div>
-        //     <div className="sideBar-bottom">
-        //         <div className="sideBar-icon">
-        //             <i className="fa fa-question-circle" />
-        //             <span className="title">ABOUT</span>
-        //         </div>
-        //     </div>
-        // </div>
+    
     );
 }

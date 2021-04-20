@@ -1,7 +1,7 @@
 import { takeLatest, call, put, delay, select } from "@redux-saga/core/effects";
 import { projectService } from "../../services/ProjectService";
 import { STATUS_CODE } from "../../util/constants/settingSystem";
-import { CREATE_PROJECT_SAGA, DELETE_PROJECT_SAGA, GET_ALL_PROJECTS, GET_ALL_PROJECTS_SAGA, UPDATE_PROJECT_SAGA } from "../constants/JiraConstants";
+import { CREATE_PROJECT_SAGA, DELETE_PROJECT_SAGA, GET_ALL_PROJECTS, GET_ALL_PROJECTS_SAGA, GET_PROJECT_DETAIL_SAGA, SET_PROJECT_DETAIL, UPDATE_PROJECT_SAGA } from "../constants/JiraConstants";
 import {DISPLAY_LOADING, HIDE_LOADING} from '../constants/LoadingConstants'
 import notification from '../../util/Notification/notification'
 
@@ -83,6 +83,17 @@ function * deleteProject(action) {
     })
 }
 
+function * getProjectDetail(action) {
+    try {
+        const {data, status} = yield call(() => projectService.getProjectDetail(action.projectID));
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put({type: SET_PROJECT_DETAIL, projectDetail: data.content})
+        }
+    }
+    catch(err) {
+        console.log(err.response.data);
+    }
+}
 
 export function * watchingCreateProject() {
     yield takeLatest(CREATE_PROJECT_SAGA, createProject);
@@ -98,4 +109,8 @@ export function * watchingUpdateProject() {
 
 export function * watchingDeleteProject() {
     yield takeLatest(DELETE_PROJECT_SAGA, deleteProject);
+}
+
+export function * watchingGetProjectDetail() {
+    yield takeLatest(GET_PROJECT_DETAIL_SAGA, getProjectDetail);
 }

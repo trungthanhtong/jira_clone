@@ -9,7 +9,7 @@ import {
     put,
     select
 } from "redux-saga/effects";
-import { ASSIGN_USER_TO_PROJECT_SAGA, GET_ALL_PROJECTS_SAGA, GET_USER_FROM_SEARCH, GET_USER_SAGA, SET_AUTHENTICATION, USER_SIGN_IN_API } from "../constants/JiraConstants";
+import { ASSIGN_USER_TO_PROJECT_SAGA, GET_ALL_PROJECTS_SAGA, GET_USER_BY_PROJECT_ID_SAGA, GET_USER_FROM_SEARCH, GET_USER_SAGA, REMOVE_USER_FROM_PROJECT_SAGA, SET_ASSIGNED_USERS, SET_AUTHENTICATION, USER_SIGN_IN_API } from "../constants/JiraConstants";
 import { userService } from "../../services/UserServices";
 import { DISPLAY_LOADING, HIDE_LOADING } from "../constants/LoadingConstants";
 import { ACCESS_TOKEN, STATUS_CODE, USER_LOGIN } from "../../util/constants/settingSystem";
@@ -67,6 +67,42 @@ function * assignUserToProject(action) {
     }
 }
 
+function * removeUserFromProject(action) {
+    try{
+        const {data, status} = yield call(() => userService.removeUserFromProject(action.userProject))
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put({
+                type: GET_ALL_PROJECTS_SAGA,
+            })
+        }
+    }
+    catch(err) {
+        console.log(err.response.data);
+    }
+}
+
+function * getUserByProjectID(action) {
+    try {
+        const {data, status} = yield call(() => userService.getUserByProjectID(action.projectID));
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put({
+                type: SET_ASSIGNED_USERS,
+                assignedUsers: data.content,
+            })
+        }
+    }
+    catch(err) {
+        console.log(err.response.data)
+        if (err.response.data.statusCode === STATUS_CODE.NOT_FOUND) {
+            yield put({
+                type: SET_ASSIGNED_USERS,
+                assignedUsers: [],
+            })
+        }
+    }
+}
+ 
+
 export function* watchingSignIn() {
     yield takeLatest(USER_SIGN_IN_API, signIn);
 }
@@ -77,4 +113,12 @@ export function * watchingGetUser() {
 
 export function * watchingAssignUserToProject() {
     yield takeLatest(ASSIGN_USER_TO_PROJECT_SAGA, assignUserToProject);
+}
+
+export function * watchingRemoveUserFromProject() {
+    yield takeLatest(REMOVE_USER_FROM_PROJECT_SAGA, removeUserFromProject);
+}
+
+export function * watchingGetUserByProjectID() {
+    yield takeLatest(GET_USER_BY_PROJECT_ID_SAGA, getUserByProjectID);
 }

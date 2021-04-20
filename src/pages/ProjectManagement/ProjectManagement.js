@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Table,
     Button,
@@ -18,16 +18,26 @@ import {
     setEditedProject,
 } from "../../redux/actions/ProjectActions";
 import { OPEN_DRAWER } from "../../redux/constants/DrawerConstants";
-import {assignUserToProject, getUser} from '../../redux/actions/UserActions'
+import {
+    assignUserToProject,
+    getUser,
+    removeUserFromProject,
+} from "../../redux/actions/UserActions";
+import {NavLink} from 'react-router-dom';
+import { openDrawer } from "../../redux/actions/DrawerActions";
+import EditProjectForm from "../../components/Form/EditProjectForm";
+
 
 export default function ProjectManagement(props) {
     const { projectList } = useSelector((state) => state.ProjectReducer);
 
     const dispatch = useDispatch();
-    
-    const {searchedUsers} = useSelector(state => state.UserReducer)
 
-    const [value, setValue] = useState('');
+    const { searchedUsers } = useSelector((state) => state.UserReducer);
+
+    const searchRef = useRef(null);
+
+    const [value, setValue] = useState("");
 
     const confirm = (project) => {
         dispatch(deleteProject(project));
@@ -87,6 +97,9 @@ export default function ProjectManagement(props) {
             title: "Project Name",
             dataIndex: "projectName",
             key: "projectName",
+            render: (text, record, index) => {
+                return <NavLink to={`/board/${record.id}`}>{text}</NavLink>
+            },
             sorter: (a, b) => {
                 const projectName1 = a.projectName.trim().toLowerCase();
                 const projectName2 = b.projectName.trim().toLowerCase();
@@ -112,56 +125,133 @@ export default function ProjectManagement(props) {
             key: "members",
             render: (text, record, index) => {
                 return (
-                    <Avatar.Group
-                        maxCount={2}
-                        maxStyle={{
-                            color: "#f56a00",
-                            backgroundColor: "#fde3cf",
+                    <Popover
+                        placement="top"
+                        title="Members"
+                        content={() => {
+                            return (
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Avatar</th>
+                                            <th>Name</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {text?.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{item.userId}</td>
+                                                    <td>
+                                                        <Avatar
+                                                            src={item.avatar}
+                                                        ></Avatar>
+                                                    </td>
+                                                    <td>{item.name}</td>
+                                                    <td>
+                                                        <button
+                                                            onClick={() =>
+                                                                dispatch(
+                                                                    removeUserFromProject(
+                                                                        record.id,
+                                                                        item.userId
+                                                                    )
+                                                                )
+                                                            }
+                                                            className="btn btn-outline-danger"
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            );
                         }}
                     >
-                        {text?.map((item, index) => {
-                            return (
-                                <Avatar
-                                    key={index}
-                                    style={{ backgroundColor: "#f56a00" }}
-                                >
-                                    {item.name[0]}
-                                </Avatar>
-                            );
-                        })}
-                        <Popover
-                            placement="top"
-                            title={"Add user"}
-                            content={() => {
-                                return (
-                                    <AutoComplete
-                                        style={{ width: 200 }}
-                                        placeholder="User's name"
-                                        value={value}
-                                        onChange={(text) => setValue(text)}
-                                        onSelect={(value, option) => {
-                                            setValue(option.label);
-                                            dispatch(assignUserToProject(record.id, value));
-                                        }}
-                                        onSearch={(value) => {
-                                            dispatch(getUser(value))
-                                        }}
-                                        options={searchedUsers?.map((user, index) => ({label: user.name, value: user.userId.toString()}))}
-                                    />
-                                );
-                            }}
-                            trigger="click"
-                        >
-                            <Avatar
-                                style={{
-                                    cursor: "pointer",
-                                    backgroundColor: "#52c41a",
+                        <Space>
+                            <Avatar.Group
+                                maxCount={2}
+                                maxStyle={{
+                                    color: "#f56a00",
+                                    backgroundColor: "#fde3cf",
                                 }}
                             >
-                                +
-                            </Avatar>
-                        </Popover>
-                    </Avatar.Group>
+                                {text?.map((item, index) => {
+                                    return (
+                                        <Avatar
+                                            key={index}
+                                            style={{
+                                                backgroundColor: "#f56a00",
+                                            }}
+                                        >
+                                            {item.name[0]}
+                                        </Avatar>
+                                    );
+                                })}
+                                <Popover
+                                    placement="top"
+                                    title={"Add user"}
+                                    content={() => {
+                                        return (
+                                            <AutoComplete
+                                                style={{ width: 200 }}
+                                                placeholder="User's name"
+                                                value={value}
+                                                onChange={(text) =>
+                                                    setValue(text)
+                                                }
+                                                onSelect={(value, option) => {
+                                                    setValue(option.label);
+                                                    dispatch(
+                                                        assignUserToProject(
+                                                            record.id,
+                                                            value
+                                                        )
+                                                    );
+                                                }}
+                                                onSearch={(value) => {
+                                                    if (searchRef.current) {
+                                                        clearTimeout(
+                                                            searchRef.current
+                                                        );
+                                                    }
+                                                    searchRef.current = setTimeout(
+                                                        () => {
+                                                            dispatch(
+                                                                getUser(value)
+                                                            );
+                                                        },
+                                                        300
+                                                    );
+                                                }}
+                                                options={searchedUsers?.map(
+                                                    (user, index) => ({
+                                                        label: user.name,
+                                                        value: user.userId.toString(),
+                                                    })
+                                                )}
+                                            />
+                                        );
+                                    }}
+                                    trigger="click"
+                                >
+                                    <Avatar
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: "#52c41a",
+                                        }}
+                                    >
+                                        +
+                                    </Avatar>
+                                </Popover>
+                            </Avatar.Group>
+                        </Space>
+                    </Popover>
                 );
             },
         },
@@ -174,7 +264,7 @@ export default function ProjectManagement(props) {
                     <Space size="middle">
                         <button
                             onClick={() => {
-                                dispatch({ type: OPEN_DRAWER });
+                                dispatch(openDrawer('Edit Project', <EditProjectForm/>));
                                 dispatch(setEditedProject(record));
                             }}
                             className="btn btn-outline-primary"
@@ -214,7 +304,7 @@ export default function ProjectManagement(props) {
                     dataSource={projectList}
                     onChange={handleChange}
                     rowKey={"id"}
-                    pagination={{ pageSize: 10 }}
+                    pagination={{ pageSize: 8 }}
                 />
             </div>
         </div>

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { GET_ALL_PROJECTS, SET_EDITED_PROJECT } from "../constants/JiraConstants"
+import { GET_ALL_PROJECTS, SET_EDITED_PROJECT, SET_PROJECT_DETAIL } from "../constants/JiraConstants"
 
 const initialState = {
     projectList: [],
@@ -7,9 +7,10 @@ const initialState = {
         id: 0,
         projectName: '',
         creator: '',
-        description: '<h1>hello</h1>',
+        description: '',
         categoryID: '2',
-    }
+    },
+    projectDetail: {}
 }
 
 export default (state = initialState, action) => {
@@ -20,7 +21,9 @@ export default (state = initialState, action) => {
         case SET_EDITED_PROJECT: {
             return {...state, editedProject: action.editedProject}
         }
-    
+        case SET_PROJECT_DETAIL: {
+            return {...state, projectDetail: action.projectDetail}
+        }
 
     default:
         return {...state}

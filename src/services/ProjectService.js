@@ -31,6 +31,10 @@ class ProjectService extends BaseService {
     deleteProject = (project) => {
         return this.delete(`Project/deleteProject?projectId=${project.id}`);
     }
+
+    getProjectDetail = (projectID) => {
+        return this.get(`Project/getProjectDetail?id=${projectID}`);
+    }
 };
 
 

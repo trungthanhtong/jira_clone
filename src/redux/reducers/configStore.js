@@ -7,6 +7,7 @@ import UserReducer from './UserReducer'
 import ProjectCategoryReducer from './ProjectCategoryReducer'
 import ProjectReducer from './ProjectReducer'
 import DrawerReducer from './DrawerReducer'
+import TaskReducer from './TaskReducer'
 
 const middlewareSaga = createMiddlewareSaga();
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     ProjectCategoryReducer,
     ProjectReducer,
     DrawerReducer,
+    TaskReducer,
 })
 
 const store = createStore(rootReducer, applyMiddleware(middlewareSaga));
